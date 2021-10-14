@@ -1,0 +1,19 @@
+<div class="container" *ngIf="store.state | async as state">
+  <div class="productos">
+    <div class="producto" *ngFor="let inventario of state.caja?.inventarios">
+      <img
+        [src]="'http://localhost:3000/productos/' + inventario.producto.imagen"
+        alt=""
+        srcset=""
+      />
+      <div class="datos">
+        <strong>{{inventario.producto.nombre}}</strong>
+        <span> $ {{ inventario.producto.precio }}</span>
+        <h1>Cant: {{ inventario.cantidad }}</h1>
+      </div>
+    </div>
+  </div>
+  <div class="ventas">
+    <h1>Ventas</h1>
+  </div>
+</div>
