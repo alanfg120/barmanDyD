@@ -1,19 +1,68 @@
 <div class="container" *ngIf="store.state | async as state">
   <div class="productos">
-    <div class="producto" *ngFor="let inventario of state.caja?.inventarios">
+    <div
+      class="producto"
+      *ngFor="let inventario of state.caja?.inventarios"
+      (click)="addProductoToFactura(inventario.producto)"
+    >
       <img
         [src]="'http://localhost:3000/productos/' + inventario.producto.imagen"
         alt=""
         srcset=""
       />
       <div class="datos">
-        <strong>{{inventario.producto.nombre}}</strong>
+        <strong>{{ inventario.producto.nombre }}</strong>
         <span> $ {{ inventario.producto.precio }}</span>
         <h1>Cant: {{ inventario.cantidad }}</h1>
       </div>
     </div>
   </div>
-  <div class="ventas">
-    <h1>Ventas</h1>
+  <div class="venta">
+    <h2>Factura de Venta</h2>
+    <div class="list-productos">
+      <div class="item" *ngFor="let item of productos; let index = index">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteProducto(index)"
+          class="delete-producto"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+        <strong>{{ index + 1 }}. {{ item.producto.nombre }}</strong>
+        <div class="cantidad">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteCantidadProducto(index)"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span>{{ item.cantidad }}</span>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="addCantidadProducto(index)"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <div class="subtotal">$ {{ item.cantidad * item.producto.precio }}</div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="total">
+        <h1>Total</h1>
+        <h1>${{ totalFactura }}</h1>
+      </div>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="confirmarCompra(state.caja?.id || 0)"
+        [disabled]="productos.length === 0"
+      >
+        Confirmar Venta
+      </button>
+    </div>
   </div>
 </div>
